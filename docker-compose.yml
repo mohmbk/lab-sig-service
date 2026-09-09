@@ -1,4 +1,18 @@
 services:
+
+
+  vault:
+    image: hashicorp/vault:1.17
+    container_name: vault
+    entrypoint: ["vault"]
+    command: ["server", "-config=/vault/config/vault.hcl"]
+    volumes:
+      - vault-data:/vault/data
+      - ./vault/config:/vault/config 
+    networks:
+      - odoo-network
+
+
   traefik:
     image: traefik:v3.7
     container_name: traefik
@@ -52,6 +66,7 @@ services:
 volumes:
   postgres-data:
   odoo-data:
+  vault-data:
 
 networks:
   odoo-network:
