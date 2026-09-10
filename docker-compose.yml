@@ -45,13 +45,16 @@ services:
       - odoo-network
 
   odoo:
-    image: odoo:13
+    build:
+      context: ./odoo
+      dockerfile: Dockerfile
     container_name: odoo
     restart: unless-stopped
     environment:
-      - HOST=postgres
-      - USER=${POSTGRES_USER}
-      - PASSWORD=${POSTGRES_PASSWORD}
+      - HOST=${POSTGRES_DB}
+      - VAULT_ADDR=${VAULT_ADDR}
+    secrets:
+      - vault_token
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.odoo.rule=Host(`odoo.localhost`)"
@@ -71,3 +74,7 @@ volumes:
 networks:
   odoo-network:
     driver: bridge
+
+secrets:
+  vault_token:
+    file: ./secrets/vault_token.txt
