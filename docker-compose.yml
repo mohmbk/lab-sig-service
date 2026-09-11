@@ -51,7 +51,7 @@ services:
     container_name: odoo
     restart: unless-stopped
     environment:
-      - HOST=${POSTGRES_DB}
+      - HOST=postgres
       - VAULT_ADDR=${VAULT_ADDR}
     secrets:
       - vault_token
